@@ -25,31 +25,42 @@ All logic is delegated to reusable workflows.
 ---
 
 # Folder Structure
-Example only. Actual implmentation may be diffrent from below structure.
+This structure organizes reusable workflows, job-level actions, and step-level actions separately to make the pipeline easier to maintain, reuse, and understand. It helps keep complex deployments modular and consistent across environments.
+
 ```
 .github/
 ├── workflows/
-│   ├── eck_on_aks.yml          # SINGLE entry pipeline
+│   ├── eck_on_aks.yml                          # SINGLE entry pipeline
 │
 │   └── reusable/
 │       ├── workflows/
-│       │   ├── deploy.yml
-│       │   ├── destroy.yml
+│       │   ├── deploy_env_blue_green.yml
+│       │   ├── deploy_env_iac_only.yml
+│       │   ├── deploy_env_services_only.yml
 │       │
-│       ├── jobs/
-│       │   ├── terraform.yml
-│       │   ├── deploy-services.yml
-│       │   ├── healthcheck.yml
-│       │
-│       ├── actions/
-│       │   ├── install-terraform/
-│       │   ├── azure-login/
-│       │   ├── kubectl/
-│       │
-│       └── steps/
-│           ├── terraform-init.yml
-│           ├── terraform-plan.yml
-│           ├── terraform-apply.yml
+│       └── actions/
+│           ├── job/
+│           │   ├── setup_blue_green_control/
+│           │   │   └── action.yml
+│           │   │
+│           │   ├── plan_iac/
+│           │   │   └── action.yml
+│           │   │
+│           │   ├── deploy_iac/
+│           │   │   └── action.yml
+│           │   │
+│           │   └── run_aks_nodepool_validation/
+│           │       └── action.yml
+│           │
+│           └── step/
+│               ├── log_blue_green_parameters/
+│               │   └── action.yml
+│               │
+│               ├── setup_blue_green_control_variables/
+│               │   └── action.yml
+│               │
+│               └── install_terraform/
+│                   └── action.yml
 
 ```
 ---
