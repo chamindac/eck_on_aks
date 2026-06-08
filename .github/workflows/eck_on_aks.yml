@@ -1,0 +1,14 @@
+# This is a basic workflow that is manually triggered
+
+name: ECK on AKS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send greeting
+      run: echo "Hello Chaminda"
