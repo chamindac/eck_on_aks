@@ -1,0 +1,10 @@
+name: Plan IaC
+description: Plan IaC
+
+runs:
+  using: composite
+  steps:
+    - name: Plan IaC
+      shell: bash
+      run: |
+        echo "Run plan IaC"
