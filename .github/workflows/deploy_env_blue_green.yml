@@ -11,4 +11,4 @@ jobs:
     runs-on: ubuntu-24.04
     environment: ${{ inputs.environment }}
     steps:
-      - uses: ./.github/workflows/reusable/actions/job/plan_iac
+      - uses: ./.github/workflows/reusable/actions/job/plan_iac/
