@@ -10,6 +10,8 @@ jobs:
   deploy_plan:
     runs-on: ubuntu-24.04
     environment: ${{ inputs.environment }}
+    steps:
+      - uses: ./.github/workflows/reusable/actions/job/plan_iac
 
   deploy_apply:
     runs-on: ubuntu-24.04
