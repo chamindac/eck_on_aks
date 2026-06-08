@@ -1,0 +1,17 @@
+name: Log Blue-Green Parameters
+description: Logs blue-green deployment variables
+
+runs:
+  using: composite
+  steps:
+    - name: Log blue-green parameters
+      shell: bash
+      run: |
+        echo "Live AKS nodepool: ${{ env.sys_live_aks_nodepool }}"
+        echo "Deployment phase: ${{ env.sys_deployment_phase }}"
+        echo "Blue is deployed: ${{ env.sys_is_blue_deployed }}"
+        echo "Green is deployed: ${{ env.sys_is_green_deployed }}"
+        echo "Green is live: ${{ env.sys_is_green_live }}"
+        echo "Service deploy AKS cluster nodepool: ${{ env.sys_svc_deploy_nodepool_suffix }}"
+        echo "Service deploy DNS zone" ${{ env.sys_svc_deploy_dns_zone }}"
+        echo "Skip health check: ${{ env.sys_is_skip_healthcheck }}"
