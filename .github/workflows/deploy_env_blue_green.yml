@@ -12,28 +12,3 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       - uses: ./.github/workflows/reusable/actions/job/plan_iac
-
-  deploy_apply:
-    runs-on: ubuntu-24.04
-    needs: deploy_plan
-    environment: ${{ inputs.environment }}
-
-  deploy_services:
-    runs-on: ubuntu-24.04
-    needs: deploy_apply
-    environment: ${{ inputs.environment }}
-
-  run_healthcheck:
-    runs-on: ubuntu-24.04
-    needs: deploy_services
-    environment: ${{ inputs.environment }}
-
-  destroy_plan:
-    runs-on: ubuntu-24.04
-    needs: run_healthcheck
-    environment: ${{ inputs.environment }}
-
-  destroy_apply:
-    runs-on: ubuntu-24.04
-    needs: destroy_plan
-    environment: ${{ inputs.environment }}
