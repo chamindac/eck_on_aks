@@ -1,0 +1,37 @@
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+
+jobs:
+
+  deploy-tf-plan:
+    runs-on: ubuntu-24.04
+    environment: ${{ inputs.environment }}
+
+  deploy-tf-apply:
+    runs-on: ubuntu-24.04
+    needs: deploy-tf-plan
+    environment: ${{ inputs.environment }}
+
+  deploy-services:
+    runs-on: ubuntu-24.04
+    needs: deploy-tf-apply
+    environment: ${{ inputs.environment }}
+
+  healthcheck:
+    runs-on: ubuntu-24.04
+    needs: deploy-services
+    environment: ${{ inputs.environment }}
+
+  destroy-tf-plan:
+    runs-on: ubuntu-24.04
+    needs: healthcheck
+    environment: ${{ inputs.environment }}
+
+  destroy-tf-apply:
+    runs-on: ubuntu-24.04
+    needs: destroy-tf-plan
+    environment: ${{ inputs.environment }}
