@@ -4,6 +4,8 @@ description: Plan IaC
 runs:
   using: composite
   steps:
+    - uses: ./.github/workflows/reusable/actions/step/log_blue_green_parameters
+
     - name: Plan IaC
       shell: bash
       run: |
