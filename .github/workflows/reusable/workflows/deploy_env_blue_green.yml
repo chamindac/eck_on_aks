@@ -7,31 +7,31 @@ on:
 
 jobs:
 
-  deploy-tf-plan:
+  deploy_plan:
     runs-on: ubuntu-24.04
     environment: ${{ inputs.environment }}
 
-  deploy-tf-apply:
+  deploy_apply:
     runs-on: ubuntu-24.04
-    needs: deploy-tf-plan
+    needs: deploy_plan
     environment: ${{ inputs.environment }}
 
-  deploy-services:
+  deploy_services:
     runs-on: ubuntu-24.04
-    needs: deploy-tf-apply
+    needs: deploy_apply
     environment: ${{ inputs.environment }}
 
-  healthcheck:
+  run_healthcheck:
     runs-on: ubuntu-24.04
-    needs: deploy-services
+    needs: deploy_services
     environment: ${{ inputs.environment }}
 
-  destroy-tf-plan:
+  destroy_plan:
     runs-on: ubuntu-24.04
-    needs: healthcheck
+    needs: run_healthcheck
     environment: ${{ inputs.environment }}
 
-  destroy-tf-apply:
+  destroy_apply:
     runs-on: ubuntu-24.04
-    needs: destroy-tf-plan
+    needs: destroy_plan
     environment: ${{ inputs.environment }}
