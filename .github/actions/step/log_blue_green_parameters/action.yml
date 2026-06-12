@@ -1,10 +1,16 @@
 name: Log Blue-Green Parameters
 description: Logs blue-green deployment variables
 
+inputs:
+  environment:
+    description: Environment name
+    required: true
+
 runs:
   using: composite
   steps:
     - name: Log blue-green parameters
       shell: bash
-      run: |
+      run: |        
+        echo "Environment: ${{ inputs.environment }}"
         echo "Live AKS nodepool: just me yet"

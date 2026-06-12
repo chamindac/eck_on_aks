@@ -1,14 +1,19 @@
 name: Plan IaC
 description: Plan IaC
 
+inputs:
+  environment:
+    description: Environment name
+    required: true
+
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v4
-      
-    - uses: ./.github/workflows/reusable/actions/step/log_blue_green_parameters
+    - uses: ./.github/actions/step/log_blue_green_parameters
+      with:
+        environment: ${{ inputs.environment }}
 
     - name: Plan IaC
       shell: bash
       run: |
-        echo "Run plan IaC"
+        echo "Run plan IaC for environment: ${{ inputs.environment }}"
