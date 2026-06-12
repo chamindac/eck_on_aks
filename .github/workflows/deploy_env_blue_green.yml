@@ -11,30 +11,42 @@ jobs:
     runs-on: ubuntu-24.04
     environment: ${{ inputs.environment }}
     steps:
-      - uses: actions/checkout@v4      
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/job/plan_iac
+        with:
+          environment: ${{ inputs.environment }}
 
   deploy_apply:
     runs-on: ubuntu-24.04
     needs: deploy_plan
     environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
 
   deploy_services:
     runs-on: ubuntu-24.04
     needs: deploy_apply
     environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
 
   run_healthcheck:
     runs-on: ubuntu-24.04
     needs: deploy_services
     environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
 
   destroy_plan:
     runs-on: ubuntu-24.04
     needs: run_healthcheck
     environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
 
   destroy_apply:
     runs-on: ubuntu-24.04
     needs: destroy_plan
     environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
