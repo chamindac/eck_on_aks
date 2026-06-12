@@ -10,3 +10,8 @@ jobs:
     uses: ./.github/workflows/deploy_env_blue_green.yml
     with:
       environment: dev
+  
+  deploy2:  
+    uses: ./.github/workflows/reusable/workflows/temp_test.yml
+    with:
+      environment: dev
