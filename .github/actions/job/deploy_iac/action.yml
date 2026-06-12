@@ -1,5 +1,5 @@
-name: plan_iac
-description: Plan IaC
+name: deploy_iac
+description: Deploy IaC
 
 inputs:
   environment:
@@ -13,7 +13,7 @@ runs:
       with:
         environment: ${{ inputs.environment }}
 
-    - name: Plan IaC
+    - name: Deploy IaC
       shell: bash
       run: |
-        echo "Run plan IaC for environment: ${{ inputs.environment }}"
+        echo "Run deploy IaC for environment: ${{ inputs.environment }}"
