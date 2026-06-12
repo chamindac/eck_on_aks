@@ -4,6 +4,8 @@ description: Plan IaC
 runs:
   using: composite
   steps:
+    - uses: actions/checkout@v4
+      
     - uses: ./.github/workflows/reusable/actions/step/log_blue_green_parameters
 
     - name: Plan IaC
