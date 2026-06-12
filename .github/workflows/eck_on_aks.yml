@@ -1,17 +1,20 @@
-# This is a basic workflow that is manually triggered
-
 name: ECK on AKS
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - qa
+          - prd-eus-001
 
 jobs:
   deploy:
     uses: ./.github/workflows/deploy_env_blue_green.yml
     with:
-      environment: dev
-  
-  deploy2:  
-    uses: ./.github/workflows/reusable/workflows/temp_test.yml
-    with:
-      environment: dev
+      environment: ${{ inputs.environment }}
