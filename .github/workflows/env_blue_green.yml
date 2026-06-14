@@ -16,7 +16,7 @@ jobs:
   stage_switch:
     name: "${{ inputs.environment }}"
     needs: stage_deploy
-    uses: ./.github/workflows/stage_switch.yml
+    uses: ./.github/workflows/deploy_services.yml
     with:
       environment: ${{ inputs.environment }}
       stage: switch
