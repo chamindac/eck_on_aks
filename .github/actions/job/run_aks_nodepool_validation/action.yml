@@ -1,0 +1,22 @@
+name: setup_blue_green_control
+description: Setup blue-green control
+
+inputs:
+  environment:
+    description: Environment name
+    required: true
+  stage:
+    description: Stage name
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/step/log_blue_green_parameters
+      with:
+        environment: ${{ inputs.environment }}
+        stage: ${{ inputs.stage }}
+    - name: "${{ inputs.stage }}: run_aks_nodepool_validation"
+      shell: bash
+      run: |
+        echo "Run aks nodepool validation for environment: ${{ inputs.environment }}"

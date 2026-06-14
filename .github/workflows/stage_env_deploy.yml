@@ -1,0 +1,25 @@
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      stage:
+        required: true
+        type: string
+
+jobs:
+  deploy_iac:
+    name: "${{ inputs.environment }}: deploy_iac"
+    uses: ./.github/workflows/deploy_iac.yml
+    with:
+      environment: ${{ inputs.environment }}
+      stage: ${{ inputs.stage }}
+  
+  run_aks_nodepool_validation:
+    name: "${{ inputs.environment }}: run_aks_nodepool_validation"
+    needs: deploy_iac
+    uses: ./.github/workflows/run_aks_nodepool_validation.yml
+    with:
+      environment: ${{ inputs.environment }}
+      stage: ${{ inputs.stage }}
