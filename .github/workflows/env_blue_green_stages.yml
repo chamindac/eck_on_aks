@@ -21,9 +21,17 @@ jobs:
       environment: ${{ inputs.environment }}
       stage: switch
   
+  stage_health_checks:
+    name: "${{ inputs.environment }}: health_checks"
+    needs: stage_switch
+    uses: ./.github/workflows/stage_run_health_checks.yml
+    with:
+      environment: ${{ inputs.environment }}
+      stage: health_checks
+  
   stage_destroy:
     name: "${{ inputs.environment }}: destroy"
-    needs: stage_switch
+    needs: stage_health_checks
     uses: ./.github/workflows/stage_deploy_iac.yml
     with:
       environment: ${{ inputs.environment }}

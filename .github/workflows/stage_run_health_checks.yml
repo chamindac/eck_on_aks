@@ -1,0 +1,22 @@
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      stage:
+        required: true
+        type: string
+
+jobs:
+  run_health_check:
+    name: "${{ inputs.stage }}: run_health_check"
+    runs-on: ubuntu-24.04
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v6.0.3
+
+      - uses: ./.github/actions/job/run_health_checks
+        with:
+          environment: ${{ inputs.environment }}
+          stage: ${{ inputs.stage }}
