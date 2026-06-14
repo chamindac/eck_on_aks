@@ -27,7 +27,7 @@ jobs:
     uses: ./.github/workflows/stage_run_health_checks.yml
     with:
       environment: ${{ inputs.environment }}
-      stage: health_checks
+      stage: switch
   
   stage_destroy:
     name: "${{ inputs.environment }}: destroy"
