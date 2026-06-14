@@ -15,8 +15,9 @@ runs:
     - uses: ./.github/actions/step/log_blue_green_parameters
       with:
         environment: ${{ inputs.environment }}
+        stage: ${{ inputs.stage }}
 
     - name: "${{ inputs.stage }}: plan_iac"
       shell: bash
       run: |
-        echo "Run plan IaC for environment: ${{ inputs.environment }}"
+        echo "Run plan IaC for environment: ${{ inputs.environment }} and stage: ${{ inputs.stage }}"

@@ -20,4 +20,4 @@ runs:
     - name: "${{ inputs.stage }}: run_health_checks"
       shell: bash
       run: |
-        echo "Run health checks for environment: ${{ inputs.environment }}"
+        echo "Run health checks for environment: ${{ inputs.environment }} and stage: ${{ inputs.stage }}"

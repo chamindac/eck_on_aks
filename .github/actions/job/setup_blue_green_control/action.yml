@@ -15,8 +15,9 @@ runs:
     - uses: ./.github/actions/step/log_blue_green_parameters
       with:
         environment: ${{ inputs.environment }}
+        stage: ${{ inputs.stage }}
 
     - name: "${{ inputs.stage }}: setup_blue_green_control"
       shell: bash
       run: |
-        echo "Run setup blue-green control for environment: ${{ inputs.environment }}"
+        echo "Run setup blue-green control for environment: ${{ inputs.environment }} and stage: ${{ inputs.stage }}"
