@@ -8,7 +8,7 @@ on:
 jobs:
   stage_deploy:
     name: "${{ inputs.environment }}"
-    uses: ./.github/workflows/stage_deploy.yml
+    uses: ./.github/workflows/deploy_iac.yml
     with:
       environment: ${{ inputs.environment }}
       stage: deploy

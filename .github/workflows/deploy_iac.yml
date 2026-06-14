@@ -9,7 +9,8 @@ on:
         type: string
 
 jobs:
-  deploy_plan:
+  plan_iac:
+    name: "${{ inputs.stage }}: plan_iac"
     runs-on: ubuntu-24.04
     environment: ${{ inputs.environment }}
     steps:
@@ -23,9 +24,10 @@ jobs:
           environment: ${{ inputs.environment }}
           stage: ${{ inputs.stage }}
 
-  deploy_apply:
+  deploy_iac:
+    name: "${{ inputs.stage }}: deploy_iac"
     runs-on: ubuntu-24.04
-    needs: deploy_plan
+    needs: plan_iac
     environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v6.0.3
