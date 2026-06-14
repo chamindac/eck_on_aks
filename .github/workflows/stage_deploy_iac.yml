@@ -1,0 +1,45 @@
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      stage:
+        required: true
+        type: string
+
+jobs:
+  plan_iac:
+    name: "${{ inputs.stage }}: plan_iac"
+    runs-on: ubuntu-24.04
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v6.0.3
+      
+      - uses: ./.github/actions/job/setup_blue_green_control
+        with:
+          environment: ${{ inputs.environment }}
+          stage: ${{ inputs.stage }}
+      
+      - uses: ./.github/actions/job/plan_iac
+        with:
+          environment: ${{ inputs.environment }}
+          stage: ${{ inputs.stage }}
+
+  deploy_iac:
+    name: "${{ inputs.stage }}: deploy_iac"
+    runs-on: ubuntu-24.04
+    needs: plan_iac
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v6.0.3
+      
+      - uses: ./.github/actions/job/deploy_iac
+        with:
+          environment: ${{ inputs.environment }}
+          stage: ${{ inputs.stage }}
+      
+      - uses: ./.github/actions/job/run_aks_nodepool_validation
+        with:
+          environment: ${{ inputs.environment }}
+          stage: ${{ inputs.stage }}

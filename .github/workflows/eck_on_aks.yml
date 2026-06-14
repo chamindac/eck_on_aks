@@ -16,6 +16,6 @@ on:
 jobs:
   deploy:
     name: "${{ inputs.environment }}"
-    uses: ./.github/workflows/stage_env_blue_green.yml
+    uses: ./.github/workflows/env_blue_green_stages.yml
     with:
       environment: ${{ inputs.environment }}

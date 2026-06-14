@@ -8,7 +8,7 @@ on:
 jobs:
   stage_deploy:
     name: "${{ inputs.environment }}: deploy"
-    uses: ./.github/workflows/stage_deploy.yml
+    uses: ./.github/workflows/stage_deploy_iac.yml
     with:
       environment: ${{ inputs.environment }}
       stage: deploy
@@ -16,23 +16,15 @@ jobs:
   stage_switch:
     name: "${{ inputs.environment }}: switch"
     needs: stage_deploy
-    uses: ./.github/workflows/deploy_services.yml
+    uses: ./.github/workflows/stage_deploy_services.yml
     with:
       environment: ${{ inputs.environment }}
       stage: switch
   
-  stage_health_check:
-    name: "${{ inputs.environment }}: health_check"
-    needs: stage_switch
-    uses: ./.github/workflows/run_health_check.yml
-    with:
-      environment: ${{ inputs.environment }}
-      stage: health_check
-  
   stage_destroy:
     name: "${{ inputs.environment }}: destroy"
-    needs: stage_health_check
-    uses: ./.github/workflows/deploy_iac.yml
+    needs: stage_switch
+    uses: ./.github/workflows/stage_deploy_iac.yml
     with:
       environment: ${{ inputs.environment }}
       stage: destroy

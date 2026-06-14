@@ -9,33 +9,30 @@ on:
         type: string
 
 jobs:
-  plan_iac:
-    name: "${{ inputs.stage }}: plan_iac"
+  deploy_services:
+    name: "${{ inputs.stage }}: deploy_services"
     runs-on: ubuntu-24.04
     environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v6.0.3
+
       - uses: ./.github/actions/job/setup_blue_green_control
-        with:
-          environment: ${{ inputs.environment }}
-          stage: ${{ inputs.stage }}
-      - uses: ./.github/actions/job/plan_iac
         with:
           environment: ${{ inputs.environment }}
           stage: ${{ inputs.stage }}
 
-  deploy_iac:
-    name: "${{ inputs.stage }}: deploy_iac"
-    runs-on: ubuntu-24.04
-    needs: plan_iac
-    environment: ${{ inputs.environment }}
-    steps:
-      - uses: actions/checkout@v6.0.3
-      - uses: ./.github/actions/job/setup_blue_green_control
+      - uses: ./.github/actions/job/deploy_services
         with:
           environment: ${{ inputs.environment }}
           stage: ${{ inputs.stage }}
-      - uses: ./.github/actions/job/deploy_iac
+  
+  run_health_check:
+    name: "${{ inputs.stage }}: run_health_check"
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6.0.3
+
+      - uses: ./.github/actions/job/run_health_checks
         with:
           environment: ${{ inputs.environment }}
           stage: ${{ inputs.stage }}
