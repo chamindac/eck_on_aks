@@ -9,9 +9,8 @@ on:
         type: string
 
 jobs:
-  deploy_services:
-    name: "${{ inputs.stage }}: deploy_services"
+  health_check:
+    name: "${{ inputs.stage }}: health_check"
     runs-on: ubuntu-24.04
-    environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v6.0.3
