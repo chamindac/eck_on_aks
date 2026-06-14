@@ -9,8 +9,8 @@ on:
         type: string
 
 jobs:
-  health_check:
-    name: "${{ inputs.stage }}: health_check"
+  run_health_check:
+    name: "${{ inputs.stage }}: run_health_check"
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6.0.3
