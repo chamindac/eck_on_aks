@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy_plan:
+    name: "${{ inputs.environment }} deploy_plan"
     runs-on: ubuntu-24.04
     environment: ${{ inputs.environment }}
     steps:
@@ -19,6 +20,7 @@ jobs:
           environment: ${{ inputs.environment }}
 
   deploy_apply:
+    name: "${{ inputs.environment }} deploy_apply"
     runs-on: ubuntu-24.04
     needs: deploy_plan
     environment: ${{ inputs.environment }}
@@ -32,6 +34,7 @@ jobs:
           environment: ${{ inputs.environment }}
 
   deploy_services:
+    name: "${{ inputs.environment }} deploy_services"
     runs-on: ubuntu-24.04
     needs: deploy_apply
     environment: ${{ inputs.environment }}
@@ -39,6 +42,7 @@ jobs:
       - uses: actions/checkout@v6.0.3
 
   run_healthcheck:
+    name: "${{ inputs.environment }} run_healthcheck"
     runs-on: ubuntu-24.04
     needs: deploy_services
     environment: ${{ inputs.environment }}
@@ -46,6 +50,7 @@ jobs:
       - uses: actions/checkout@v6.0.3
 
   destroy_plan:
+    name: "${{ inputs.environment }} destroy_plan"
     runs-on: ubuntu-24.04
     needs: run_healthcheck
     environment: ${{ inputs.environment }}
@@ -59,6 +64,7 @@ jobs:
           environment: ${{ inputs.environment }}
 
   destroy_apply:
+    name: "${{ inputs.environment }} destroy_apply"
     runs-on: ubuntu-24.04
     needs: destroy_plan
     environment: ${{ inputs.environment }}
