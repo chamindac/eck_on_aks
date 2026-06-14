@@ -31,7 +31,7 @@ jobs:
   
   stage_destroy:
     name: "${{ inputs.environment }}"
-    needs: stage_switch
+    needs: stage_health_check
     uses: ./.github/workflows/deploy_iac.yml
     with:
       environment: ${{ inputs.environment }}
