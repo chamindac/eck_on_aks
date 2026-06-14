@@ -1,0 +1,16 @@
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      stage:
+        required: true
+        type: string
+
+jobs:
+  switch_services:
+    runs-on: ubuntu-24.04
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v6.0.3

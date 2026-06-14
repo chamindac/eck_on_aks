@@ -5,6 +5,9 @@ inputs:
   environment:
     description: Environment name
     required: true
+  stage:
+    description: Stage name
+    required: true
 
 runs:
   using: composite
@@ -13,7 +16,7 @@ runs:
       with:
         environment: ${{ inputs.environment }}
 
-    - name: Setup Blue-Green Control
+    - name: "${{ inputs.stage }}: setup_blue_green_control"
       shell: bash
       run: |
         echo "Run setup blue-green control for environment: ${{ inputs.environment }}"

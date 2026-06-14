@@ -5,6 +5,9 @@ inputs:
   environment:
     description: Environment name
     required: true
+  stage:
+    description: Stage name
+    required: true
 
 runs:
   using: composite
@@ -13,7 +16,7 @@ runs:
       with:
         environment: ${{ inputs.environment }}
 
-    - name: Deploy IaC
+    - name: "${{ inputs.stage }}: deploy_iac"
       shell: bash
       run: |
         echo "Run deploy IaC for environment: ${{ inputs.environment }}"

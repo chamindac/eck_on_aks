@@ -5,12 +5,16 @@ inputs:
   environment:
     description: Environment name
     required: true
+  stage:
+    description: Stage name
+    required: true
 
 runs:
   using: composite
   steps:
-    - name: Log blue-green parameters
+    - name: "${{ inputs.stage }}: Log blue-green parameters"
       shell: bash
       run: |        
         echo "Environment: ${{ inputs.environment }}"
+        echo "Stage: ${{ inputs.stage }}"
         echo "Live AKS nodepool: just me yet"

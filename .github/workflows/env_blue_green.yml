@@ -11,30 +11,15 @@ jobs:
     uses: ./.github/workflows/stage_deploy.yml
     with:
       environment: ${{ inputs.environment }}
-  # deploy_plan:
-  #   runs-on: ubuntu-24.04
-  #   environment: ${{ inputs.environment }}
-  #   steps:
-  #     - uses: actions/checkout@v6.0.3
-  #     - uses: ./.github/actions/job/setup_blue_green_control
-  #       with:
-  #         environment: ${{ inputs.environment }}
-  #     - uses: ./.github/actions/job/plan_iac
-  #       with:
-  #         environment: ${{ inputs.environment }}
-
-  # deploy_apply:
-  #   runs-on: ubuntu-24.04
-  #   needs: deploy_plan
-  #   environment: ${{ inputs.environment }}
-  #   steps:
-  #     - uses: actions/checkout@v6.0.3
-  #     - uses: ./.github/actions/job/setup_blue_green_control
-  #       with:
-  #         environment: ${{ inputs.environment }}
-  #     - uses: ./.github/actions/job/deploy_iac
-  #       with:
-  #         environment: ${{ inputs.environment }}
+      stage: deploy
+  
+  stage_switch:
+    name: "${{ inputs.environment }}"
+    needs: stage_deploy
+    uses: ./.github/workflows/stage_switch.yml
+    with:
+      environment: ${{ inputs.environment }}
+      stage: switch
 
   # switch_services:
   #   runs-on: ubuntu-24.04
