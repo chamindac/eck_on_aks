@@ -39,7 +39,8 @@ jobs:
           environment: ${{ inputs.environment }}
           stage: ${{ inputs.stage }}
       
-      - uses: ./.github/actions/job/run_aks_nodepool_validation
+      - if: ${{ inputs.stage == 'deploy' }}
+        uses: ./.github/actions/job/run_aks_nodepool_validation
         with:
           environment: ${{ inputs.environment }}
           stage: ${{ inputs.stage }}
