@@ -15,6 +15,7 @@ on:
 
 jobs:
   deploy:
+    name: "${{ inputs.environment }} deploy_plan"
     uses: ./.github/workflows/deploy_env_blue_green.yml
     with:
       environment: ${{ inputs.environment }}
