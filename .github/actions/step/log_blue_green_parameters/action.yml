@@ -1,5 +1,5 @@
-name: Log Blue-Green Parameters
-description: Logs blue-green deployment variables
+name: log_blue_green_parameters
+description: Logs blue-green paramters
 
 inputs:
   environment:
@@ -12,7 +12,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: "${{ inputs.stage }}: log blue-green parameters"
+    - name: "${{ inputs.stage }}: log_blue_green_parameters"
       shell: bash
       run: |        
         echo "Environment: ${{ inputs.environment }}"
