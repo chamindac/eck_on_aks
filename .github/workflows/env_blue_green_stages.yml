@@ -12,6 +12,7 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       stage: deploy
+    secrets: inherit
   
   stage_switch:
     name: "${{ inputs.environment }}: switch"
@@ -20,6 +21,7 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       stage: switch
+    secrets: inherit
   
   stage_health_checks:
     name: "${{ inputs.environment }}: health_checks"
@@ -28,6 +30,7 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       stage: switch
+    secrets: inherit
   
   stage_destroy:
     name: "${{ inputs.environment }}: destroy"
@@ -36,3 +39,4 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       stage: destroy
+    secrets: inherit
