@@ -1,0 +1,28 @@
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      stage:
+        required: true
+        type: string
+
+jobs:
+  setup_blue_green_control:
+    name: "${{ inputs.stage }}: setup_blue_green_control"
+    runs-on: ubuntu-24.04
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v6.0.3
+
+      - uses: ./.github/actions/job/setup_blue_green_control
+        with:
+          environment: ${{ inputs.environment }}
+          stage: ${{ inputs.stage }}
+          gh_variables_pat: ${{ secrets.GH_VARIABLES_PAT }}
+          sys_is_blue_deployed: ${{ vars.SYS_IS_BLUE_DEPLOYED }}
+          sys_is_green_deployed: ${{ vars.SYS_IS_GREEN_DEPLOYED }}
+          sys_is_green_live: ${{ vars.SYS_IS_GREEN_LIVE }}
+          sys_svc_deploy_nodepool_suffix: ${{ vars.SYS_SVC_DEPLOY_NODEPOOL_SUFFIX }}
+          sys_live_aks_nodepool: ${{ vars.SYS_LIVE_AKS_NODEPOOL }}
