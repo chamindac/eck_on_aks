@@ -13,9 +13,6 @@ jobs:
     name: "${{ inputs.stage }}: setup_blue_green_control"
     runs-on: ubuntu-24.04
     environment: ${{ inputs.environment }}
-    permissions:
-      actions: write
-      contents: read
     steps:
       - uses: actions/checkout@v6.0.3
 
@@ -34,7 +31,7 @@ jobs:
       - name: "${{ inputs.stage }}: setup_blue_green_control"
         shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GH_VARIABLES_PAT }}
           GH_REPO: ${{ github.repository }}
           GH_ENVIRONMENT: ${{ inputs.environment }}
           SYS_DEPLOYMENT_PHASE: ${{ inputs.stage }}

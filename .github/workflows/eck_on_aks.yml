@@ -13,10 +13,6 @@ on:
           - qa
           - prd-eus-001
 
-permissions:
-  actions: write
-  contents: read
-
 jobs:
   deploy:
     name: "${{ inputs.environment }}"

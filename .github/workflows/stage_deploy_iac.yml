@@ -8,10 +8,6 @@ on:
         required: true
         type: string
 
-permissions:
-  actions: write
-  contents: read
-
 jobs:
   setup_blue_green_control_plan_iac:
     name: "${{ inputs.stage }}: setup_blue_green_control (plan_iac)"

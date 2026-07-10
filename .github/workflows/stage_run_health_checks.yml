@@ -8,10 +8,6 @@ on:
         required: true
         type: string
 
-permissions:
-  actions: write
-  contents: read
-
 jobs:
   run_health_check:
     name: "${{ inputs.stage }}: run_health_check"
