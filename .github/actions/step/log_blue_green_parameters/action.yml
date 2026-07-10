@@ -1,6 +1,12 @@
 name: log_blue_green_parameters
 description: Logs blue-green paramters
 
+# NOTE: All blue-green variable values are declared as explicit inputs rather than
+# being read directly via vars.* context. This is a GitHub Actions platform limitation:
+# composite actions do not have access to the vars or secrets contexts
+# (see https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/contexts#context-availability).
+# Callers (workflows or other composite actions) must read vars.* themselves and pass
+# the values in as inputs.
 inputs:
   environment:
     description: Environment name
