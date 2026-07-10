@@ -20,11 +20,17 @@ inputs:
   sys_is_green_live:
     description: Value of SYS_IS_GREEN_LIVE environment variable
     required: true
+  sys_is_skip_healthcheck:
+    description: Value of SYS_IS_SKIP_HEALTHCHECK environment variable
+    required: true
   sys_svc_deploy_nodepool_suffix:
     description: Value of SYS_SVC_DEPLOY_NODEPOOL_SUFFIX environment variable
     required: true
   sys_live_aks_nodepool:
     description: Value of SYS_LIVE_AKS_NODEPOOL environment variable
+    required: true
+  sys_svc_deploy_dns_zone:
+    description: Value of SYS_SVC_DEPLOY_DNS_ZONE environment variable
     required: true
 
 runs:
@@ -34,6 +40,13 @@ runs:
       with:
         environment: ${{ inputs.environment }}
         stage: ${{ inputs.stage }}
+        sys_is_blue_deployed: ${{ inputs.sys_is_blue_deployed }}
+        sys_is_green_deployed: ${{ inputs.sys_is_green_deployed }}
+        sys_is_green_live: ${{ inputs.sys_is_green_live }}
+        sys_is_skip_healthcheck: ${{ inputs.sys_is_skip_healthcheck }}
+        sys_live_aks_nodepool: ${{ inputs.sys_live_aks_nodepool }}
+        sys_svc_deploy_dns_zone: ${{ inputs.sys_svc_deploy_dns_zone }}
+        sys_svc_deploy_nodepool_suffix: ${{ inputs.sys_svc_deploy_nodepool_suffix }}
 
     - name: "${{ inputs.stage }}: setup_blue_green_control"
       shell: bash

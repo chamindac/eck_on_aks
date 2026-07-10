@@ -8,13 +8,45 @@ inputs:
   stage:
     description: Stage name
     required: true
+  sys_is_blue_deployed:
+    description: Value of SYS_IS_BLUE_DEPLOYED
+    required: true
+  sys_is_green_deployed:
+    description: Value of SYS_IS_GREEN_DEPLOYED
+    required: true
+  sys_is_green_live:
+    description: Value of SYS_IS_GREEN_LIVE
+    required: true
+  sys_is_skip_healthcheck:
+    description: Value of SYS_IS_SKIP_HEALTHCHECK
+    required: true
+  sys_live_aks_nodepool:
+    description: Value of SYS_LIVE_AKS_NODEPOOL
+    required: true
+  sys_svc_deploy_dns_zone:
+    description: Value of SYS_SVC_DEPLOY_DNS_ZONE
+    required: true
+  sys_svc_deploy_nodepool_suffix:
+    description: Value of SYS_SVC_DEPLOY_NODEPOOL_SUFFIX
+    required: true
 
 runs:
   using: composite
   steps:
     - name: "${{ inputs.stage }}: log_blue_green_parameters"
       shell: bash
-      run: |        
-        echo "Environment: ${{ inputs.environment }}"
-        echo "Stage: ${{ inputs.stage }}"
-        echo "Live AKS nodepool: just me yet"
+      run: |
+        echo "=============================="
+        echo " Blue-Green Parameters"
+        echo "=============================="
+        echo "  Environment                    : ${{ inputs.environment }}"
+        echo "  Stage                          : ${{ inputs.stage }}"
+        echo "------------------------------"
+        echo "  SYS_IS_BLUE_DEPLOYED           : ${{ inputs.sys_is_blue_deployed }}"
+        echo "  SYS_IS_GREEN_DEPLOYED          : ${{ inputs.sys_is_green_deployed }}"
+        echo "  SYS_IS_GREEN_LIVE              : ${{ inputs.sys_is_green_live }}"
+        echo "  SYS_IS_SKIP_HEALTHCHECK        : ${{ inputs.sys_is_skip_healthcheck }}"
+        echo "  SYS_LIVE_AKS_NODEPOOL          : ${{ inputs.sys_live_aks_nodepool }}"
+        echo "  SYS_SVC_DEPLOY_DNS_ZONE        : ${{ inputs.sys_svc_deploy_dns_zone }}"
+        echo "  SYS_SVC_DEPLOY_NODEPOOL_SUFFIX : ${{ inputs.sys_svc_deploy_nodepool_suffix }}"
+        echo "=============================="

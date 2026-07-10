@@ -8,6 +8,27 @@ inputs:
   stage:
     description: Stage name
     required: true
+  sys_is_blue_deployed:
+    description: Value of SYS_IS_BLUE_DEPLOYED
+    required: true
+  sys_is_green_deployed:
+    description: Value of SYS_IS_GREEN_DEPLOYED
+    required: true
+  sys_is_green_live:
+    description: Value of SYS_IS_GREEN_LIVE
+    required: true
+  sys_is_skip_healthcheck:
+    description: Value of SYS_IS_SKIP_HEALTHCHECK
+    required: true
+  sys_live_aks_nodepool:
+    description: Value of SYS_LIVE_AKS_NODEPOOL
+    required: true
+  sys_svc_deploy_dns_zone:
+    description: Value of SYS_SVC_DEPLOY_DNS_ZONE
+    required: true
+  sys_svc_deploy_nodepool_suffix:
+    description: Value of SYS_SVC_DEPLOY_NODEPOOL_SUFFIX
+    required: true
 
 runs:
   using: composite
@@ -16,6 +37,13 @@ runs:
       with:
         environment: ${{ inputs.environment }}
         stage: ${{ inputs.stage }}
+        sys_is_blue_deployed: ${{ inputs.sys_is_blue_deployed }}
+        sys_is_green_deployed: ${{ inputs.sys_is_green_deployed }}
+        sys_is_green_live: ${{ inputs.sys_is_green_live }}
+        sys_is_skip_healthcheck: ${{ inputs.sys_is_skip_healthcheck }}
+        sys_live_aks_nodepool: ${{ inputs.sys_live_aks_nodepool }}
+        sys_svc_deploy_dns_zone: ${{ inputs.sys_svc_deploy_dns_zone }}
+        sys_svc_deploy_nodepool_suffix: ${{ inputs.sys_svc_deploy_nodepool_suffix }}
 
     - name: "${{ inputs.stage }}: plan_iac"
       shell: bash

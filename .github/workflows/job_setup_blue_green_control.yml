@@ -24,5 +24,7 @@ jobs:
           sys_is_blue_deployed: ${{ vars.SYS_IS_BLUE_DEPLOYED }}
           sys_is_green_deployed: ${{ vars.SYS_IS_GREEN_DEPLOYED }}
           sys_is_green_live: ${{ vars.SYS_IS_GREEN_LIVE }}
+          sys_is_skip_healthcheck: ${{ vars.SYS_IS_SKIP_HEALTHCHECK }}
           sys_svc_deploy_nodepool_suffix: ${{ vars.SYS_SVC_DEPLOY_NODEPOOL_SUFFIX }}
           sys_live_aks_nodepool: ${{ vars.SYS_LIVE_AKS_NODEPOOL }}
+          sys_svc_deploy_dns_zone: ${{ vars.SYS_SVC_DEPLOY_DNS_ZONE }}
