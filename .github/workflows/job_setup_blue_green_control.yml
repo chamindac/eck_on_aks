@@ -16,15 +16,78 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.3
 
-      - uses: ./.github/actions/job/setup_blue_green_control
+      - uses: ./.github/actions/step/log_blue_green_parameters
         with:
           environment: ${{ inputs.environment }}
           stage: ${{ inputs.stage }}
-          gh_variables_pat: ${{ secrets.GH_VARIABLES_PAT }}
           sys_is_blue_deployed: ${{ vars.SYS_IS_BLUE_DEPLOYED }}
           sys_is_green_deployed: ${{ vars.SYS_IS_GREEN_DEPLOYED }}
           sys_is_green_live: ${{ vars.SYS_IS_GREEN_LIVE }}
           sys_is_skip_healthcheck: ${{ vars.SYS_IS_SKIP_HEALTHCHECK }}
-          sys_svc_deploy_nodepool_suffix: ${{ vars.SYS_SVC_DEPLOY_NODEPOOL_SUFFIX }}
           sys_live_aks_nodepool: ${{ vars.SYS_LIVE_AKS_NODEPOOL }}
           sys_svc_deploy_dns_zone: ${{ vars.SYS_SVC_DEPLOY_DNS_ZONE }}
+          sys_svc_deploy_nodepool_suffix: ${{ vars.SYS_SVC_DEPLOY_NODEPOOL_SUFFIX }}
+
+      - name: "${{ inputs.stage }}: setup_blue_green_control"
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GH_VARIABLES_PAT }}
+          GH_REPO: ${{ github.repository }}
+          GH_ENVIRONMENT: ${{ inputs.environment }}
+          SYS_DEPLOYMENT_PHASE: ${{ inputs.stage }}
+          SYS_IS_BLUE_DEPLOYED: ${{ vars.SYS_IS_BLUE_DEPLOYED }}
+          SYS_IS_GREEN_DEPLOYED: ${{ vars.SYS_IS_GREEN_DEPLOYED }}
+          SYS_IS_GREEN_LIVE: ${{ vars.SYS_IS_GREEN_LIVE }}
+          SYS_SVC_DEPLOY_NODEPOOL_SUFFIX: ${{ vars.SYS_SVC_DEPLOY_NODEPOOL_SUFFIX }}
+          SYS_LIVE_AKS_NODEPOOL: ${{ vars.SYS_LIVE_AKS_NODEPOOL }}
+        run: |
+          update_var() {
+            local var_name="$1"
+            local var_value="$2"
+            echo "Updating ${var_name} to '${var_value}'..."
+            curl -sf -X PATCH \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GH_REPO}/environments/${GH_ENVIRONMENT}/variables/${var_name}" \
+              -d "{\"name\":\"${var_name}\",\"value\":\"${var_value}\"}"
+            echo "Done."
+          }
+
+          if [ "${SYS_DEPLOYMENT_PHASE}" = "deploy" ]; then
+            update_var "SYS_IS_SKIP_HEALTHCHECK" "false"
+
+            if [ "${SYS_IS_GREEN_LIVE}" = "true" ] && [ "${SYS_IS_BLUE_DEPLOYED}" = "false" ]; then
+              echo "Green is live. Setting blue nodepool to deploy..."
+              update_var "SYS_IS_BLUE_DEPLOYED" "true"
+            elif [ "${SYS_IS_GREEN_LIVE}" = "false" ] && [ "${SYS_IS_GREEN_DEPLOYED}" = "false" ]; then
+              echo "Blue is live. Setting green nodepool to deploy..."
+              update_var "SYS_IS_GREEN_DEPLOYED" "true"
+            elif [ "${SYS_IS_GREEN_LIVE}" = "true" ]; then
+              echo "Green is live. Retry deploying blue nodepool..."
+            else
+              echo "Blue is live. Retry deploying green nodepool..."
+            fi
+
+          elif [ "${SYS_DEPLOYMENT_PHASE}" = "switch" ]; then
+            if [ "${SYS_IS_GREEN_LIVE}" = "false" ] && [ "${SYS_SVC_DEPLOY_NODEPOOL_SUFFIX}" = "green" ]; then
+              echo "Green deployed. Setting green to go live..."
+              update_var "SYS_IS_GREEN_LIVE" "true"
+            elif [ "${SYS_IS_GREEN_LIVE}" = "true" ] && [ "${SYS_SVC_DEPLOY_NODEPOOL_SUFFIX}" = "blue" ]; then
+              echo "Blue deployed. Setting blue to go live..."
+              update_var "SYS_IS_GREEN_LIVE" "false"
+            else
+              echo "New app deployed instance is ${SYS_SVC_DEPLOY_NODEPOOL_SUFFIX}. Setting as live..."
+            fi
+
+          elif [ "${SYS_DEPLOYMENT_PHASE}" = "destroy" ]; then
+            if [ "${SYS_IS_GREEN_LIVE}" = "true" ] && [ "${SYS_IS_BLUE_DEPLOYED}" = "true" ]; then
+              echo "New green nodepool is live now. Setting blue nodepool to destroy..."
+              update_var "SYS_IS_BLUE_DEPLOYED" "false"
+            elif [ "${SYS_IS_GREEN_LIVE}" = "false" ] && [ "${SYS_IS_GREEN_DEPLOYED}" = "true" ]; then
+              echo "New blue nodepool is live now. Setting green nodepool to destroy..."
+              update_var "SYS_IS_GREEN_DEPLOYED" "false"
+            else
+              echo "Live nodepool is ${SYS_LIVE_AKS_NODEPOOL}. Retry destroying none live nodepool..."
+            fi
+          fi
