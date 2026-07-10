@@ -39,21 +39,10 @@ jobs:
           sys_svc_deploy_dns_zone: ${{ vars.SYS_SVC_DEPLOY_DNS_ZONE }}
           sys_svc_deploy_nodepool_suffix: ${{ vars.SYS_SVC_DEPLOY_NODEPOOL_SUFFIX }}
 
-  setup_blue_green_control_deploy_iac:
-    name: "${{ inputs.stage }}: setup_blue_green_control (deploy_iac)"
-    needs: plan_iac
-    uses: ./.github/workflows/job_setup_blue_green_control.yml
-    with:
-      environment: ${{ inputs.environment }}
-      stage: ${{ inputs.stage }}
-    # Forwards all secrets from this workflow to the called workflow, including GH_VARIABLES_PAT.
-    # Without this, the called workflow would have no access to any secrets.
-    secrets: inherit
-
   deploy_iac:
     name: "${{ inputs.stage }}: deploy_iac"
     runs-on: ubuntu-24.04
-    needs: setup_blue_green_control_deploy_iac
+    needs: plan_iac
     environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v6.0.3
